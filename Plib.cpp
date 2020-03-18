@@ -1,92 +1,119 @@
 #include <iostream>
 #include <string>
-#include <time.h>
 #include <fstream>
 #include "Plib.h"
+
 using namespace std;
 //that's hot
 Plib::Plib(){ // default constructor
-    capacity = 1;
-    index = 0;
-    array = new string[capacity];
-    searchArray = new string[capacity];
+    Pcapacity = 1;
+    Bcapacity =1;
+    Pindex = 0;
+    Bindex = 0;
+    prayerArray = new string[Pcapacity];
+    bibleArray = new string[Bcapacity];
+    Parray = new int[Pcapacity];
+    Barray = new int[Bcapacity];
     }
 
 Plib::Plib(int capacity){ //parameter constructor
-    this->capacity = capacity;
-    index = 0;
-    array = new string[capacity];
-    searchArray = new string[capacity];
+    Pcapacity = capacity;
+    Bcapacity = capacity;
+    Pindex = 0;
+    Bindex = 0;
+    prayerArray = new string[capacity];
+    bibleArray = new string[capacity];
+    Parray = new int[capacity];
+    Barray = new int[capacity];
     }
 
 Plib::~Plib(){
-    capacity = 0;
-    index = 0;
-    delete[] searchArray;
-    delete[] array;
+    Pcapacity = 0;
+    Bcapacity = 0;
+    Pindex = 0;
+    Bindex = 0;
+    delete[] bibleArray;
+    delete[] prayerArray;
     delete[] Parray;
     delete[] Barray;
-    array = nullptr;
+    prayerArray = nullptr;
     Parray = nullptr;
     Barray = nullptr;
 }
 
 void Plib::makeNull(){
-    array = nullptr;
+    prayerArray = nullptr;
     Parray = nullptr;
     Barray = nullptr;
-    searchArray = nullptr;
+    bibleArray = nullptr;
 }
 
 void Plib::resize_bible(){
-    capacity *=2;
-    string* newArray = new string[capacity];
-    for(int i = 0; i < index; i++){
-        newArray[i] = searchArray[i];
+    Bcapacity *=2;
+    string* newArray = new string[Bcapacity];
+    int* thisArray = new int[Bcapacity];
+    for(int i = 0; i < Bindex; i++){
+        newArray[i] = bibleArray[i];
+        thisArray[i] = Barray[i];
     }
-    delete[] searchArray;
-    searchArray = newArray;
+    delete[] Barray;
+    delete[] bibleArray;
+    bibleArray = newArray;
+    Barray = thisArray;
 }
 
 void Plib::resize(){ // growing the library 
-    capacity *= 2;
-    string* newArray = new string[capacity]; // make a new array
-    for(int i = 0; i < index; i++){ // copies information over
-        newArray[i] = array[i];
+    Pcapacity *= 2;
+    int* thisArray = new int[Pcapacity];
+    string* newArray = new string[Pcapacity]; // make a new array
+    for(int i = 0; i < Pindex; i++){ 
+        thisArray[i] = Parray[i];// copies information over
+        newArray[i] = prayerArray[i];
     }
-    delete[] array; // delete old data
-    array = newArray; // change data
+    delete[] Parray;
+    delete[] prayerArray; // delete old data
+    prayerArray = newArray; // change data
+    Parray = thisArray;
 }
 
 void Plib::pushBack(){ // for adding prayers to the library
-    index += 1;
-    if(index == capacity){// in case we are at capacity
+    Pindex += 1;
+    if(Pindex == Pcapacity){// in case we are at capacity
         resize();
     }
-    getline(cin >> ws ,array[index]);
+    getline(cin >> ws ,prayerArray[Pindex]);
 }
 
 void Plib::save(){ // saves array to the document
     ofstream myfile("prayers.txt",ios_base::app);
     if(myfile.is_open()){
-        myfile << array[index] << endl;
+        myfile << prayerArray[Pindex] << endl;
         myfile.close();
     }
     else{
         cout<<"unable to open file"<<endl;
     }
 }
-
+int Plib::ret_Pcapacity(){
+    return Pcapacity;
+}
+int Plib::ret_Bcapacity(){
+    return Bcapacity;
+}
+int Plib::ret_Pindex(){
+    return Pindex;
+}
 void Plib::uploadPrayerFromDoc(){
 ifstream myfile("prayers.txt");
+cout<<"here"<<endl;
 if(myfile.is_open()){
-    cout<<"doc is open"<<endl;
-    index = 0;
+    //cout<<"doc is open"<<endl;
+    Pindex = 0;
     while(!myfile.eof()){
-       // getline(myfile,array[index],' ');
-        getline(myfile,array[index],'\n');
-        index+=1;
-        if(index == capacity){
+        getline(myfile,prayerArray[Pindex],'\n');
+        cout<<Pindex<<endl;
+        Pindex+=1;
+        if(Pindex == Pcapacity){
             resize();
         }
     }
@@ -96,23 +123,21 @@ if(myfile.is_open()){
     }   // upload the prayers from the document
 }
 void Plib::wordFindPrayer(string keyword){
-    Parray = new int[capacity]; // make new array of prayers to put the indexes in
-    for(int i = 0; i < index; i++){ // run through all the prayers
+ // make new array of prayers to put the indexes in
+    for(int i = 0; i < Pindex; i++){ // run through all the prayers
         Parray[i] = 0;
         // array at index i will have the line #, but the i will be the word num
-        string str = array[i]; // assign the string from the prayer
+        string str = prayerArray[i]; // assign the string from the prayer
         size_t found = str.find(keyword); /// find the keyword
         if(found != string::npos){ // find the points /
-            //cout<<endl<<"string found in word " << i<<": " <<endl; // index are words
             Parray[i] = 1; // 
-            //cout<<"this is the string it matches: "<<array[i]<<endl<<endl;
         }    
     }   
 }
 void Plib::read_search(){
-    for(int i = 0; i < index; i++){
+    for(int i = 0; i < Pindex; i++){
         if(Parray[i] == 1){
-            cout<<array[i]<<endl;
+            cout<<prayerArray[i]<<endl;
         }
     }
     cout<<endl;
@@ -127,17 +152,19 @@ void Plib::printMenu(){
 // keep working on this, it will be a \n delineation
 void Plib::uploadBible(){
     ifstream myfile("FormattedBible.txt");
+    Bindex = 0;
     if(myfile.is_open()){
-        while(!myfile.eof()){ // this should get all of the string file.
-            if(index == capacity){
+        while(!myfile.eof()){
+            //cout<<index<<endl; // this should get all of the string file.
+            if(Bindex == Bcapacity){
                 resize_bible();
             }
-        getline(myfile, searchArray[index],'\n');
-        index +=1;
+        getline(myfile, bibleArray[Bindex],'\n');
+        Bindex +=1;
         }
-        cout<<"copied info to array"<<endl;
+        cout<<"copied info to prayerArray"<<endl;
         myfile.close();
-        cout<<"it made it to the array"<<endl;
+        cout<<"it made it to the prayerArray"<<endl;
     }else{
         cout<<"thisfile did not open"<<endl;
     }  // upload the prayers from the document
@@ -145,26 +172,29 @@ void Plib::uploadBible(){
 // the Parray will hold an array of occurrences 
 
 void Plib::wordFindBible(string keyword){
-    Barray = new int[capacity]; // make new array of prayers to put the indexes in
-    for(int i = 0; i < index; i++){ // run through all the prayers
+    // make new array of prayers to put the indexes in
+    for(int i = 0; i < Bindex; i++){ // run through all the prayers
         Barray[i] = 0;
-        string str = searchArray[i]; // assign the string from the prayer
+        string str = bibleArray[i]; // assign the string from the prayer
         size_t found = str.find(keyword); /// find the keyword
         if(found != string::npos){ // find the points /
             Barray[i] = 1; 
         }    
     } 
 }
+int Plib::ret_Bindex(){
+    return Bindex;
+}
 void Plib::read_bible_search(int x){
-    int iterator =0;
-        for(int i = 0; i < index; i++){
-        if(Barray[i] == 1){
-            cout<<iterator+1<<": "<<searchArray[i]<<endl<<endl;
-            iterator +=1;
-        }
-        if(iterator == x){
-            i = index-1;
-        }
+    int iterator = 0;
+        for(int i = 0; i < Bindex; i++){
+            if(Barray[i] == 1){
+                cout<<iterator+1<<": "<<bibleArray[i]<<endl<<endl;
+                iterator +=1;
+            }
+            if(iterator == x){
+                i = Bindex-1;
+            }
     }
     cout<<endl;
 }

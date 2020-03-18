@@ -26,52 +26,60 @@ ai part?
 */
 int main(){
     string input;
-    cout<<"howdy"<<endl;
+    //cout<<"howdy"<<endl;
     Plib p(5);
+    //cout<<"here"<<endl;
+    p.uploadBible();
+    //cout<<p.ret_Bindex()<<endl;
+    //cout<<p.ret_Bcapacity()<<endl;
+    
+    //cout<<p.ret_Pindex()<<endl;
+    //cout<<p.ret_Pcapacity()<<endl;
+    //cout<<"there"<<endl;
+    
+    //cout<<"no here"<<endl;
     do{
         p.printMenu();
         cin >> input;
         if(input == "P"){
+            p.uploadPrayerFromDoc();
+            cout<<"capacity: "<<p.ret_Pcapacity()<<endl;
+            cout<<"index: "<<p.ret_Pindex()<<endl;
             cout<<"Pray: "<<endl;
             p.pushBack(); // send it back in the array
             // the array will be an array of current prayers
-            cout<<"saving to document"<<endl;
+            cout<<"saving to document..."<<endl;
             p.save();
             // saves to the document, to the bottom of the list
             cout<<"saved"<<endl;
         }
         else if(input == "SP"){
             string searchWord;
-            p.uploadPrayerFromDoc();
             cout<<endl<<"Enter the word you're looking for: ";
             cin >> searchWord;
             cout<<endl;
             p.wordFindPrayer(searchWord);
-            cout<<"after found"<<endl;
+            cout<<endl;
             p.read_search();
             //search for keywords through the document
         }
         else if(input == "SB"){
             string searchWord;
             int num;
-            
-            p.uploadBible();
             cout<<"enter word to search"<<endl;
             cin>>searchWord;
             cout<<endl;
-            
             p.wordFindBible(searchWord);
+            
             cout<<"enter how many references you want"<<endl;
-            cout<<"after found: "<<endl;
+            cout<<endl;
             cin >> num;
             p.read_bible_search(num);
 
         }else if(input == "Q"){
             p.makeNull(); // will stop core from being dumped
             break;
-        }
-        
-        
+        }   
     }
     while(input != "Q");
 return 0;

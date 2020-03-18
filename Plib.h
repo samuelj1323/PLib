@@ -9,12 +9,14 @@ using namespace std;
 // make a word search function word_find_bible(string keyword)
 
 class Plib{
-    int index;
-    int capacity;
-    string* array;
+    int Bindex;
+    int Pindex;
+    int Pcapacity;
+    int Bcapacity;
+    string* prayerArray;
     int* Parray;
     int* Barray;
-    string* searchArray;
+    string* bibleArray;
     public:
     Plib();
     Plib(int capacity);
@@ -24,6 +26,10 @@ class Plib{
     void resize();
     void pushBack();
     void save();
+    int ret_Pcapacity();
+    int ret_Bcapacity();
+    int ret_Bindex();
+    int ret_Pindex();
     void uploadPrayerFromDoc(); 
     void wordFindPrayer(string keyword);
     void read_search();
