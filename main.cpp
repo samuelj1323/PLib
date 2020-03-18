@@ -43,8 +43,7 @@ int main(){
         cin >> input;
         if(input == "P"){
             p.uploadPrayerFromDoc();
-            cout<<"capacity: "<<p.ret_Pcapacity()<<endl;
-            cout<<"index: "<<p.ret_Pindex()<<endl;
+            
             cout<<"Pray: "<<endl;
             p.pushBack(); // send it back in the array
             // the array will be an array of current prayers
@@ -54,6 +53,7 @@ int main(){
             cout<<"saved"<<endl;
         }
         else if(input == "SP"){
+            p.uploadPrayerFromDoc();
             string searchWord;
             cout<<endl<<"Enter the word you're looking for: ";
             cin >> searchWord;
@@ -66,14 +66,14 @@ int main(){
         else if(input == "SB"){
             string searchWord;
             int num;
-            cout<<"enter word to search"<<endl;
+            cout<<"enter word to search: ";
             cin>>searchWord;
             cout<<endl;
             p.wordFindBible(searchWord);
             
-            cout<<"enter how many references you want"<<endl;
-            cout<<endl;
+            cout<<"enter how many references you want: ";
             cin >> num;
+            cout<<endl;
             p.read_bible_search(num);
 
         }else if(input == "Q"){
