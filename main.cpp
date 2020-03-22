@@ -6,38 +6,18 @@ using namespace std;
 
 
 /*
-# Problems I'm facing:
-make own file csv that has a text version of the bible.
-Need to take in dumb input
 # Things I might want:
-if i make my prayer finder 2d array i can use the first input the row, or the day, and then i can use the second for the index of the prayer in the string
-Delete prayer function
-figure out upload function
-adding date and time at the beginning of prayer for sorting
 figure out how to determine key words
+key words to bible search
 voice to text
-verse identification
 biblical definitions
-character referrences
-gooey?
-how to deploy
-how to add voice in reading bible or response
-ai part?
+Linked list Geanealogy
 */
 int main(){
     string input;
-    //cout<<"howdy"<<endl;
     Plib p(5);
-    //cout<<"here"<<endl;
     p.uploadBible();
-    //cout<<p.ret_Bindex()<<endl;
-    //cout<<p.ret_Bcapacity()<<endl;
-    
-    //cout<<p.ret_Pindex()<<endl;
-    //cout<<p.ret_Pcapacity()<<endl;
-    //cout<<"there"<<endl;
-    
-    //cout<<"no here"<<endl;
+
     do{
         p.printMenu();
         cin >> input;
@@ -76,7 +56,10 @@ int main(){
             cout<<endl;
             p.read_bible_search(num);
 
-        }else if(input == "Q"){
+        }else if(input == "K"){
+            p.keyWords();
+        }
+        else if(input == "Q"){
             p.makeNull(); // will stop core from being dumped
             break;
         }   

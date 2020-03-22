@@ -14,9 +14,11 @@ class Plib{
     int Pcapacity;
     int Bcapacity;
     string* prayerArray;
+    string* bibleArray;
+    string* kWords;
     int* Parray;
     int* Barray;
-    string* bibleArray;
+    
     public:
     Plib();
     Plib(int capacity);
@@ -37,6 +39,7 @@ class Plib{
     void uploadBible();
     void wordFindBible(string keyword);
     void read_bible_search(int x);
+    void keyWords();// fill string array with key words from latest prayer to look through the bible for.
 };
 
 #endif
